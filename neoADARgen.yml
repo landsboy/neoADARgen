@@ -1,4 +1,4 @@
-name: neoADARtigen
+name: neoADARgen
 
 channels:
   - conda-forge
