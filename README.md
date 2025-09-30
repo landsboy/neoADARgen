@@ -1,4 +1,4 @@
-# neoADARtigen
+# neoADARgen
 A tool for creating a neo-antigen by RNA editing.
 
 This demo version of the tool in fact ran on three specific projects in TCGA (BRCA, GBN, SCKM), if you want to run on other projects you must download them from [TCGA](https://portal.gdc.cancer.gov/analysis_page?app=Downloads) and put them in the testdata folder.
@@ -22,8 +22,8 @@ git clone https://github.com/landsboy/neo-ADARtigen.git
 
 2. Create conda environment
 ```
-conda env create -f neoADARtigen.yml
-conda activate neoADARtigen  # test successful creation
+conda env create -f neoADARgen.yml
+conda activate neoADARgen  # test successful creation
 ```
 3. Run the following file with the following arguments
 ```
