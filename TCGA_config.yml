@@ -6,8 +6,8 @@ paths:
   project_dir: "testdata"          # Directory containing raw patient mutation data
   results_dir: "results"           # Directory where all pipeline outputs will be saved
   sup_dir: "sup"                   # Directory with supplementary annotation files (e.g., HLA, BED, TPM)
-  netmhc_path: <path/to/your/netMHCpan4.1>
-  hg38_fa: <path/to/your/hg38.fa>
+  netmhc_path: <path/to/your/netMHCpan4.1>  # Path to NetMHCpan installation
+  hg38_fa: <path/to/your/hg38.fa>  # Path to the hg38 reference genome FASTA file
   
 runtime:
   edit_modes: [0, 1, 2]            # 0 = no RNA editing, 1 = single A→G editing, 2 = double editing (ADAR simulation)

@@ -1,7 +1,7 @@
 from pathlib import Path
 import typer
 from rich import print
-from .config import load_config
+from .config import AppConfig, load_config
 from .logging_setup import setup_logging
 from .io_utils import setup_environment
 from .pipeline import main
@@ -11,9 +11,8 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 @app.command()
 def run(
     config: Path = typer.Option(
-        "config.yml",
+        None,
         "--config", "-c",
-        exists=True,
         help="Path to YAML configuration file."
     ),
     project_dir: Path = typer.Option(
@@ -39,10 +38,15 @@ def run(
     ),
 ):
     """
-    Run the pipeline using YAML config + optional CLI overrides.
+    Run the pipeline using YAML config or optional CLI overrides.
     """
-    # 1. Load from YAML
-    cfg = load_config(config)
+    # 1. Load from YAML or initialize defaults
+    if config and config.exists():
+        print(f"[yellow]Loading configuration from:[/yellow] {config}")
+        cfg = load_config(config)
+    else:
+        print(f"[yellow]Using CLI arguments only.[/yellow]")
+        cfg = AppConfig()
 
     # 2. Apply CLI overrides (only if provided)
     if project_dir is not None:
@@ -60,6 +64,21 @@ def run(
     if verbose is not None:
         cfg.runtime.verbose = verbose
 
+    # Check that all required paths are set
+    required_paths = {
+        "project_dir": cfg.paths.project_dir,
+        "results_dir": cfg.paths.results_dir,
+        "sup_dir": cfg.paths.sup_dir,
+        "netmhc_path": cfg.paths.netmhc_path,
+        "hg38_fa": cfg.paths.hg38_fa,
+    }
+
+    missing = [name for name, path in required_paths.items() if path is None]
+    if missing:
+        print(f"[red]Missing required arguments:[/red] {', '.join(missing)}")
+        print("[yellow]You must provide them either in config.yml or via CLI.[/yellow]")
+        raise typer.Exit(code=1)
+    
     # validate all important paths
     validate_paths(cfg)
 

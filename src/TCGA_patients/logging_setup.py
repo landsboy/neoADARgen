@@ -1,7 +1,7 @@
 import logging
 from rich.logging import RichHandler
 
-def setup_logging(verbose: bool = False, log_file: str = "TCGA_patients.log") -> None:
+def setup_logging(verbose: bool = False, log_file: str = "logs/TCGA_patients.log") -> None:
     level = logging.DEBUG if verbose else logging.INFO
 
     handlers = [RichHandler(rich_tracebacks=True)]

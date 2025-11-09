@@ -138,6 +138,42 @@ def create_list_of_mutations(mut_dir: str | Path) -> Tuple[List[tuple], str, int
         # Any other parsing issue
         raise MutationFileError(f"Unexpected error parsing {gz_path}: {e}") from e
 
+# # ============================================================
+# #  No-editing mode
+# # ============================================================
+# def handle_no_editing(mutation, mut_isoforms, pos_list):
+#     """Generate unedited peptide windows around mutation."""
+#     mut_start_index = pos_list[0]
+#     mut_end_index = pos_list[-1]
+#     new_mut_isoforms = []
+
+#     for mut_isoform in mut_isoforms:
+#         if ">" in mutation[0] or "del" in mutation[0]:
+#             if mut_start_index % 3 == 0:
+#                 start_index = max(mut_start_index - 24, 0)
+#                 end_index = mut_end_index + 27
+#             elif mut_start_index % 3 == 1:
+#                 start_index = max(mut_start_index - 25, 0)
+#                 end_index = mut_end_index + 26
+#             else:
+#                 start_index = max(mut_start_index - 26, 0)
+#                 end_index = mut_end_index + 25
+#         else:
+#             if mut_start_index % 3 == 0:
+#                 start_index = max(mut_start_index - 24, 0)
+#             elif mut_start_index % 3 == 1:
+#                 start_index = max(mut_start_index - 25, 0)
+#             else:
+#                 start_index = max(mut_start_index - 26, 0)
+#             if mut_end_index % 3 == 0:
+#                 end_index = mut_end_index + 27
+#             elif mut_end_index % 3 == 1:
+#                 end_index = mut_end_index + 26
+#             else:
+#                 end_index = mut_end_index + 25
+#         new_mut_isoforms.append("".join(mut_isoform[start_index:end_index]))
+#     return new_mut_isoforms
+
 # ============================================================
 #  Single-edit mode
 # ============================================================
