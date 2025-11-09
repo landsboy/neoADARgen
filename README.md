@@ -57,7 +57,7 @@ conda activate TCGA_patients_env
 3. Running the Pipeline
 The easiest way to run neoADARgen is by providing a configuration file (.yml) that defines all required paths and runtime parameters.
 for example:
-```python
+```yaml
 paths:
   project_dir: "testdata"          # Directory containing raw patient mutation data
   results_dir: "results"           # Directory where all pipeline outputs will be saved
