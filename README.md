@@ -35,9 +35,6 @@ The pipeline performs the following steps:
 
  - **Result summarization:** Outputs ranked neoantigen candidates per mutation.
 
-# Getting help
-If you need help of any kind, feel free to open a new issue.
-
 # Setup
 Requires locally installed version of [NetMHCpan4.1](https://services.healthtech.dtu.dk/cgi-bin/sw_request?software=netMHCpan&version=4.1&packageversion=4.1b&platform=Linux)
 
@@ -88,9 +85,11 @@ python -m src.TCGA_patients.cli \
   --verbose
   ```
   
-  # Example Output:
+  # Example Output
 
   For each patient, the pipeline generates an individual results file named according to their patient ID (e.g.results/BRCA/TCGA-AC-A2FK.tsv).
+  
+  ![Example output](sup/example.png)
 
   Within each file, all somatic mutations located in coding regions (CDS) are analyzed under three distinct conditions:
 
@@ -103,3 +102,6 @@ python -m src.TCGA_patients.cli \
   Each combination is processed through the NetMHCpan predictor to evaluate its HLA-binding affinity and neoantigen potential.
 
   This allows quantifying, for every patient, how RNA editing may increase the likelihood of generating strong-binding neoantigens — revealing novel tumor-specific “editopes”.
+
+  # Getting help
+  If you need help of any kind, feel free to open a new issue.
