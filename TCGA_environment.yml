@@ -1,0 +1,18 @@
+name: TCGA_patients_env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - python=3.10
+  - biopython
+  - pyyaml
+  - rich
+  - typer
+  - pydantic>=2
+  - pandas >= 1.2.5
+  - bedtools >= 2.30.0
+  - pip
+  - pip:
+      - joblib

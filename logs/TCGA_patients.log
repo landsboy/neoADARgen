@@ -1,0 +1,17 @@
+2025-11-05 16:15:45,881 | INFO     | src.TCGA_patients.pipeline | Starting neoADARgen pipeline in: testdata
+2025-11-05 16:15:45,888 | INFO     | src.TCGA_patients.pipeline | Processing cancer type: BRCA
+2025-11-05 16:15:45,893 | INFO     | src.TCGA_patients.io_utils | 0 duplicate patients found in BRCA
+2025-11-05 16:15:45,901 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-EW-A1P1 with 12 CDS mutations.
+2025-11-05 16:20:52,769 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-AC-A2FK with 9 CDS mutations.
+2025-11-05 16:24:49,997 | INFO     | src.TCGA_patients.io_utils | TPM values added for BRCA
+2025-11-05 16:24:50,003 | INFO     | src.TCGA_patients.pipeline | Processing cancer type: GBM
+2025-11-05 16:24:50,007 | INFO     | src.TCGA_patients.io_utils | 0 duplicate patients found in GBM
+2025-11-05 16:24:50,014 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-28-5218 with 31 CDS mutations.
+2025-11-05 16:36:20,276 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-32-1980 with 26 CDS mutations.
+2025-11-05 16:49:01,156 | INFO     | src.TCGA_patients.io_utils | TPM values added for GBM
+2025-11-05 16:49:01,162 | INFO     | src.TCGA_patients.pipeline | Processing cancer type: SKCM
+2025-11-05 16:49:01,166 | INFO     | src.TCGA_patients.io_utils | 0 duplicate patients found in SKCM
+2025-11-05 16:49:01,175 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-EB-A5VV with 7 CDS mutations.
+2025-11-05 16:52:11,510 | INFO     | src.TCGA_patients.pipeline | Processing patient TCGA-DA-A3F2 with 16 CDS mutations.
+2025-11-05 17:02:55,678 | INFO     | src.TCGA_patients.io_utils | TPM values added for SKCM
+2025-11-05 17:02:55,682 | INFO     | src.TCGA_patients.pipeline | neoADARgen pipeline completed successfully.

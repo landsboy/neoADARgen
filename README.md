@@ -1,11 +1,31 @@
 # neoADARgen
-A tool for creating a neo-antigen by RNA editing.
+A computational pipeline for generating neo-antigens through RNA editing.
+
+
+neoADARgen is a bioinformatics tool designed to identify and engineer personalized tumor-specific neoantigens (editopes) by simulating A-to-I RNA editing events on somatic mutations.
+The tool integrates mutation annotation, sequence extraction, RNA editing simulation, peptide generation, and MHC binding prediction via NetMHCpan 4.1.
+
 
 This demo version of the tool in fact ran on three specific projects in TCGA (BRCA, GBN, SCKM), if you want to run on other projects you must download them from [TCGA](https://portal.gdc.cancer.gov/analysis_page?app=Downloads) and put them in the testdata folder.
 
 An accompanying repo to the paper:
 
-****NAME OF THE ARTICLE****
+****Employing RNA editing to engineer personalized tumor-specific neoantigens (editopes)****
+
+# Overview
+The pipeline performs the following steps:
+
+ - **Mutation parsing:** Reads patient-specific mutation annotations (MAF format).
+
+ - **Sequence extraction:** Retrieves reference DNA sequences (±20 bp around each mutation).
+
+ - **RNA editing simulation:** Applies A-to-I (read as G) edits in single or double combinations.
+
+ - **Peptide generation:** Translates mutated and edited sequences into peptides of defined lengths (default: 9-mer).
+
+ - **MHC binding prediction:** Uses NetMHCpan 4.3 to predict peptide–HLA binding affinities.
+
+ - **Result summarization:** Outputs ranked neoantigen candidates per mutation.
 
 # Getting help
 If you need help of any kind, feel free to open a new issue.
@@ -18,14 +38,44 @@ And requires a local download of the [human genome v.38](https://hgdownload.soe.
 1. Clone the repository
 ```
 git clone https://github.com/landsboy/neo-ADARtigen.git
+cd neoADARgen
 ```
 
 2. Create conda environment
 ```
-conda env create -f neoADARgen.yml
-conda activate neoADARgen  # test successful creation
+conda env create -f TCGA_environment.yml
+conda activate TCGA_patients_env 
 ```
-3. Run the following file with the following arguments
+3. Running the Pipeline
+The easiest way to run neoADARgen is by providing a configuration file (.yml) that defines all required paths and runtime parameters.
+
+Once the configuration file is ready (e.g. TCGA_config.yml), you can run the full pipeline with a single command:
 ```
-python tcga_patients.py -p <path/to/yours/netMHCpan4.1> -f <path/to/yours/hg38.fa>
+python -m src.TCGA_patients.cli -c TCGA_config.yml
 ```
+If you prefer, you can skip the config file and pass the parameters directly via the command line:
+```
+python -m src.TCGA_patients.cli \
+  --project_dir testdata \
+  --results_dir results \
+  --sup_dir sup \
+  --netmhc_path /path/to/netMHCpan-4.1 \
+  --hg38_fa /path/to/hg38.fa \
+  --verbose
+  ```
+  
+  # Example Output:
+
+  For each patient, the pipeline generates an individual results file named according to their patient ID (e.g.results/BRCA/TCGA-AC-A2FK.tsv).
+
+  Within each file, all somatic mutations located in coding regions (CDS) are analyzed under three distinct conditions:
+
+  0. Without RNA editing (original tumor mutation)
+
+  1. A single A→G editing event (simulating ADAR activity at one site)
+
+  2. With double A→G editing events (simulating ADAR activity at two positions)
+
+  Each combination is processed through the NetMHCpan predictor to evaluate its HLA-binding affinity and neoantigen potential.
+
+  This allows quantifying, for every patient, how RNA editing may increase the likelihood of generating strong-binding neoantigens — revealing novel tumor-specific “editopes”.

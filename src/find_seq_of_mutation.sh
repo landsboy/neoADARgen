@@ -1,8 +1,7 @@
 #!/bin/bash
 chr="$1"
-mut_position="$2"
-start_seq=$((mut_position-$3))
-end_seq=$((mut_position+$3))
+start_seq="$2"
+end_seq="$3"
 k="$4"
 genome="$5"
 # path to create temp file of BED format for query

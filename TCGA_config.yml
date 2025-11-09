@@ -1,0 +1,17 @@
+# ========================
+# neoADARgen Configuration
+# ========================
+
+paths:
+  project_dir: "testdata"          # Directory containing raw patient mutation data
+  results_dir: "results"           # Directory where all pipeline outputs will be saved
+  sup_dir: "sup"                   # Directory with supplementary annotation files (e.g., HLA, BED, TPM)
+  netmhc_path: <path/to/your/netMHCpan4.1>
+  hg38_fa: <path/to/your/hg38.fa>
+  
+runtime:
+  edit_modes: [0, 1, 2]            # 0 = no RNA editing, 1 = single A→G editing, 2 = double editing (ADAR simulation)
+  mer_length: 9                    # Peptide length for NetMHCpan prediction (9-mer is the default)
+  num_nuc_around_mut: 20           # Number of nucleotides to extract on each side of the mutation
+  verbose: false                   # If true, enable detailed DEBUG logging
+  log_file: "logs/TCGA_patients.log"   # Name of the log file saved in the results directory
