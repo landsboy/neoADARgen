@@ -5,7 +5,7 @@
 ![NetMHCpan](https://img.shields.io/badge/NetMHCpan-4.1-FF6C37)
 ![Genome](https://img.shields.io/badge/Genome-hg38-2E8B57)
 ![RNAEditing](https://img.shields.io/badge/RNA_Editing-ADAR_A→I-8A2BE2)
-![TCGA](https://img.shields.io/badge/Data-TCGA_Bioinformatics-4B0082)
+![TCGA](https://img.shields.io/badge/GDC-Data-Portal-4B0082)
 
 A computational pipeline for generating neo-antigens through RNA editing.
 
@@ -31,7 +31,7 @@ The pipeline performs the following steps:
 
  - **Peptide generation:** Translates mutated and edited sequences into peptides of defined lengths (default: 9-mer).
 
- - **MHC binding prediction:** Uses NetMHCpan 4.3 to predict peptide–HLA binding affinities.
+ - **MHC binding prediction:** Uses NetMHCpan 4.1 to predict peptide–HLA binding affinities.
 
  - **Result summarization:** Outputs ranked neoantigen candidates per mutation.
 
@@ -56,6 +56,22 @@ conda activate TCGA_patients_env
 ```
 3. Running the Pipeline
 The easiest way to run neoADARgen is by providing a configuration file (.yml) that defines all required paths and runtime parameters.
+for example:
+```python
+paths:
+  project_dir: "testdata"          # Directory containing raw patient mutation data
+  results_dir: "results"           # Directory where all pipeline outputs will be saved
+  sup_dir: "sup"                   # Directory with supplementary annotation files (e.g., HLA, BED, TPM)
+  netmhc_path: <path/to/your/netMHCpan4.1>
+  hg38_fa: <path/to/your/hg38.fa>
+  
+runtime:
+  edit_modes: [0, 1, 2]            # 0 = no RNA editing, 1 = single A→G editing, 2 = double editing (ADAR simulation)
+  mer_length: 9                    # Peptide length for NetMHCpan prediction (9-mer is the default)
+  num_nuc_around_mut: 20           # Number of nucleotides to extract on each side of the mutation
+  verbose: false                   # If true, enable detailed DEBUG logging
+  log_file: "logs/TCGA_patients.log"   # Name of the log file saved in the results directory
+```
 
 Once the configuration file is ready (e.g. TCGA_config.yml), you can run the full pipeline with a single command:
 ```
