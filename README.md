@@ -1,4 +1,12 @@
 # neoADARgen
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Shell](https://img.shields.io/badge/Shell-Bash-lightgrey)
+![Conda](https://img.shields.io/badge/Conda-environment-44A833)
+![NetMHCpan](https://img.shields.io/badge/NetMHCpan-4.1-FF6C37)
+![Genome](https://img.shields.io/badge/Genome-hg38-2E8B57)
+![RNAEditing](https://img.shields.io/badge/RNA_Editing-ADAR_A→I-8A2BE2)
+![TCGA](https://img.shields.io/badge/Data-TCGA_Bioinformatics-4B0082)
+
 A computational pipeline for generating neo-antigens through RNA editing.
 
 
