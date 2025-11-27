@@ -107,7 +107,7 @@ python -m src.TCGA_patients.cli \
 
   neoADARgen can be executed in a simplified single-mutation mode, where you provide:
 
-  - One mutation (format:'chr7:g.100958233G>A' )
+  - One mutation (format: 'chr7:g.100958233G>A' )
 
   - One or more HLA alleles (comma-separated)
 
