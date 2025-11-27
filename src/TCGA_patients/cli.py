@@ -65,11 +65,11 @@ def run(
     ),
     mutation: str = typer.Option(
         None, "--mutation", "-m",
-        help="Mutation in format like chr1:g.12825232T>G"
+        help="Mutation(s) in format like chr1:g.12825232T>G"
     ),
     hla: list[str] = typer.Option(
     None, "--hla",
-    help="Patient-specific HLA alleles (1-6).",
+    help="Patient-specific HLA alleles.",
     ),
     
     gene_counts: Path = typer.Option(

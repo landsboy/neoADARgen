@@ -47,7 +47,11 @@ def run_single_mutation(cfg: AppConfig) -> None:
     # Parse HLA list
     hla_list = parse_hla(cfg.single.hla)
 
-    log.info(f"Mutation: {cfg.single.mutation}")
+    # Parse mutation
+    mutation_list = [m.strip() for m in cfg.single.mutation.split(",") if m.strip()]
+
+
+    log.info(f"Mutation: {mutation_list}")
     log.info(f"HLA alleles: {hla_list}")
 
     if cfg.single.gene_counts:
@@ -56,19 +60,18 @@ def run_single_mutation(cfg: AppConfig) -> None:
         log.info("No gene-counts file provided — skipping TPM annotation")
     
     with open(os.path.join(results_dir, "single_output.tsv"), "w") as fout:
-        idx = 0
         fout.write("# neoADARgen 1.0\n")
         fout.write(
             "Mutation\tStrand\tBest-target\tGuide-RNA\t"
             "Rank(%)\tAffinity(nM)\tRank_BA(%)\tHLA\tEDITS\n"
         )
-        process_mutation(fout, cfg.single.mutation, idx, hla_list, cfg)
+        for idx, mut in enumerate(mutation_list):
+            process_mutation(fout, mut, idx, hla_list, cfg)
 
-
-        # Add TPM data after processing all patients
-        if cfg.single.gene_counts:
-            add_TPM(cfg.single.gene_counts, results_dir)
-            log.info("TPM annotation added")
+            # Add TPM data after processing all patients
+            if cfg.single.gene_counts:
+                add_TPM(cfg.single.gene_counts, results_dir)
+                log.info("TPM annotation added")
 
 
     log.info("neoADARgen pipeline completed successfully.")

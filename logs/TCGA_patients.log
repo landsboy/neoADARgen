@@ -1,5 +1,6 @@
-2025-11-27 21:00:31,429 | INFO     | src.TCGA_patients.pipeline | Running neoADARgen in SINGLE-MUTATION mode
-2025-11-27 21:00:31,432 | INFO     | src.TCGA_patients.pipeline | Mutation: chr7:g.100958233G>A
-2025-11-27 21:00:31,434 | INFO     | src.TCGA_patients.pipeline | HLA alleles: ['HLA-C1203', 'HLA-B3501']
-2025-11-27 21:00:31,436 | INFO     | src.TCGA_patients.pipeline | No gene-counts file provided — skipping TPM annotation
-2025-11-27 21:00:47,421 | INFO     | src.TCGA_patients.pipeline | neoADARgen pipeline completed successfully.
+2025-11-27 21:14:28,427 | INFO     | src.TCGA_patients.pipeline | Running neoADARgen in SINGLE-MUTATION mode
+2025-11-27 21:14:28,430 | INFO     | src.TCGA_patients.pipeline | Mutation: ['chr7:g.100958233G>A', 'chr12:g.2539821C>T']
+2025-11-27 21:14:28,431 | INFO     | src.TCGA_patients.pipeline | HLA alleles: ['HLA-C1203', 'HLA-B3501']
+2025-11-27 21:14:28,433 | INFO     | src.TCGA_patients.pipeline | No gene-counts file provided — skipping TPM annotation
+2025-11-27 21:14:44,705 | ERROR    | src.TCGA_patients.preprocessing | No transcript info found for chr12:g.2539821C>T
+2025-11-27 21:14:44,709 | INFO     | src.TCGA_patients.pipeline | neoADARgen pipeline completed successfully.
