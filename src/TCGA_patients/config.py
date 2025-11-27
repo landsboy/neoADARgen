@@ -26,10 +26,18 @@ class Runtime(BaseModel):
     def size_of_seq(self):
         return (2 * self.num_nuc_around_mut) + (2 * 26) + 1
 
+class SingleMode(BaseModel):
+    mutation: str | None = None
+    hla: List[str] | None = None
+    gene_counts: Path | None = None
 
 class AppConfig(BaseModel):
     paths: Paths = Paths()
     runtime: Runtime = Runtime()
+    single: SingleMode = SingleMode()
+    mode: str = "tcga"
+ 
+
 
 def load_config(path: Path) -> AppConfig:
     with open(path, "r") as f:

@@ -103,5 +103,26 @@ python -m src.TCGA_patients.cli \
 
   This allows quantifying, for every patient, how RNA editing may increase the likelihood of generating strong-binding neoantigens — revealing novel tumor-specific “editopes”.
 
+  # Single-Mutation Mode
+
+  neoADARgen can be executed in a simplified single-mutation mode, where you provide:
+
+  - One mutation (format:'chr7:g.100958233G>A' )
+
+  - One or more HLA alleles (comma-separated)
+
+  - (Optional) gene-counts PATH for TPM annotation
+
+  For example:
+  ```
+  python -m src.TCGA_patients.cli \
+    --results_dir results \
+    --netmhc_path /path/to/netMHCpan-4.1 \
+    --hg38_fa /path/to/hg38.fa \
+    --mutation "chr7:g.100958233G>A" \
+    --hla "HLA-C1203,HLA-B3501" \
+    --sup_dir sup
+  ```
+
   # Getting help
   If you need help of any kind, feel free to open a new issue.

@@ -12,9 +12,48 @@ import gzip
 from typing import Optional, Dict, List, Tuple
 import logging
 from .config import AppConfig
+import re
 
 log = logging.getLogger(__name__)
 
+def parse_hla(alleles):
+    """
+    Normalize HLA input (string or list) into a list of canonical HLA forms.
+    Output format: HLA-C1203
+    """
+    # Case 1: Typer sends list
+    if isinstance(alleles, list):
+        # Case 1a: list with ONE item that contains comma-separated values
+        if len(alleles) == 1:
+            raw_string = alleles[0]
+            raw_list = [x.strip() for x in raw_string.split(",") if x.strip()]
+        else:
+            # Case 1b: already split into list
+            raw_list = alleles
+
+    # Case 2: directly a string
+    elif isinstance(alleles, str):
+        raw_list = [x.strip() for x in alleles.split(",") if x.strip()]
+
+    else:
+        return []
+
+    cleaned = []
+
+    for h in raw_list:
+        h = h.upper().replace("HLA-", "").replace("HLA", "")
+        h = re.sub(r"[\*\:_]", "", h)
+
+        m = re.match(r"^([A-Z])(\d{2})(\d{2})$", h)
+        if not m:
+            raise ValueError(f"Invalid HLA format: {h}")
+
+        gene, d1, d2 = m.group(1), m.group(2), m.group(3)
+        cleaned.append(f"HLA-{gene}{d1}{d2}")
+
+    return cleaned
+
+    
 
 def setup_environment(netmhc_path: Path):
     """
@@ -230,3 +269,45 @@ def add_TPM(primary_site: str, duplicate_patients: list[str], cfg: AppConfig, re
                 break
 
     log.info(f"TPM values added for {primary_site}")
+
+def add_TPM_single_mode(folder_path: Path, res_path: Path):
+    if not folder_path:
+        log.warning(f"TPM folder not found: {folder_path}")
+        return
+
+    # Load TPM file
+    tsv_files = [f for f in os.listdir(folder_path) if f.endswith(".tsv")]
+    if not tsv_files:
+        log.warning(f"No TPM file in {folder_path}")
+        return
+
+    tpm_file_path = folder_path / tsv_files[0]
+    mapping = {}
+    with open(tpm_file_path, "r") as tpm_file:
+        for i, line in enumerate(tpm_file):
+            if i >= 6:  # skip header lines
+                columns = line.strip().split("\t")
+                key = columns[6]   # Gene name
+                value = columns[1] # TPM value
+                mapping[value] = key
+
+    input_file = Path(res_path) / "single_output.tsv"
+    temp_file = input_file.with_suffix(".tmp")
+
+    with open(input_file, "r") as patient_file, open(temp_file, "w") as new_patient_file:
+        for i, line in enumerate(patient_file):
+            if i >= 6:
+                columns = line.strip().split("\t")
+                gene = columns[0]
+                tpm_value = mapping.get(gene, "")
+                if tpm_value:
+                    new_patient_file.write(line.strip() + f"\t{tpm_value}\n")
+                else:
+                    new_patient_file.write(line)
+            elif i == 5:
+                new_patient_file.write(line.strip() + "\tTPM\n")
+            else:
+                new_patient_file.write(line)
+    
+    # Replace original file atomically
+    shutil.move(temp_file, input_file)

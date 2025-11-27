@@ -18,7 +18,7 @@ from .preprocessing import preprocessing
 from .mutations import create_list_of_mutations, generate_single_edit_sequences, generate_double_edit_sequences
 from .mhcpan import run_netmhcpan, parse_netmhcpan_output
 from .hla import find_HLA
-from .io_utils import find_duplicate_patients_in_data, add_TPM
+from .io_utils import parse_hla, find_duplicate_patients_in_data, add_TPM
 
 # Initialize logger
 log = logging.getLogger(__name__)
@@ -27,10 +27,55 @@ log = logging.getLogger(__name__)
 # =============================================================================
 # MAIN PIPELINE
 # =============================================================================
-def main(cfg: AppConfig) -> None:
+def main(cfg):
     """
     Main entry point for the neoADARgen pipeline.
+    """
+    if cfg.mode == "single":
+        run_single_mutation(cfg)
+    else:
+        run_tcga_pipeline(cfg)
+    
 
+def run_single_mutation(cfg: AppConfig) -> None:
+    """
+    Run neoADARgen in single-mutation mode
+    """
+    results_dir = cfg.paths.results_dir
+    log.info("Running neoADARgen in SINGLE-MUTATION mode")
+
+    # Parse HLA list
+    hla_list = parse_hla(cfg.single.hla)
+
+    log.info(f"Mutation: {cfg.single.mutation}")
+    log.info(f"HLA alleles: {hla_list}")
+
+    if cfg.single.gene_counts:
+        log.info(f"Using gene counts file: {cfg.single.gene_counts}")
+    else:
+        log.info("No gene-counts file provided — skipping TPM annotation")
+    
+    with open(os.path.join(results_dir, "single_output.tsv"), "w") as fout:
+        idx = 0
+        fout.write("# neoADARgen 1.0\n")
+        fout.write(
+            "Mutation\tStrand\tBest-target\tGuide-RNA\t"
+            "Rank(%)\tAffinity(nM)\tRank_BA(%)\tHLA\tEDITS\n"
+        )
+        process_mutation(fout, cfg.single.mutation, idx, hla_list, cfg)
+
+
+        # Add TPM data after processing all patients
+        if cfg.single.gene_counts:
+            add_TPM(cfg.single.gene_counts, results_dir)
+            log.info("TPM annotation added")
+
+
+    log.info("neoADARgen pipeline completed successfully.")
+
+
+def run_tcga_pipeline(cfg: AppConfig) -> None:
+    """
     Iterates over all cancer types in the project directory,
     loads HLA typing data, processes patients, and writes final results.
     """
@@ -109,7 +154,7 @@ def run_patient_batch(
             write_file_header(fout, patient_id, folder, n_mutations, len(mut_list))
 
             for mut in mut_list:
-                process_mutation(fout, mut, idx, hla_list, cfg)
+                process_mutation(fout, mut, idx, hla_list, cfg, "TCGA")
 
 
 # ============================================================
@@ -159,10 +204,15 @@ def write_best_result(fout, mutation, sb_wb_results, mut_isoforms, strand, pos, 
         gRNA_NA = "".join(
             seq_list[max(pos - cfg.runtime.num_nuc_around_mut, 0):min(pos + cfg.runtime.num_nuc_around_mut + m, len(seq_list))]
         )
-        fout.write(
-            f"{mutation[1]}\t{mutation[2]}\t{mutation[0]}\t{strand}\t{mutation[3]}"
-            f"\tNA\t{gRNA_NA}\tNA\tNA\tNA\tNA\t{edit_option}\n"
-        )
+        if cfg.mode == "single":
+            fout.write(
+                f"{mutation}\t{strand}\tNA\t{gRNA_NA}\tNA\tNA\tNA\tNA\t{edit_option}\n"
+            )
+        else:
+            fout.write(
+                f"{mutation[1]}\t{mutation[2]}\t{mutation[0]}\t{strand}\t{mutation[3]}"
+                f"\tNA\t{gRNA_NA}\tNA\tNA\tNA\tNA\t{edit_option}\n"
+            )
         return
 
     best = sorted(sb_wb_results, key=lambda x: (x[2], x[4], x[5]))[0]
@@ -206,12 +256,18 @@ def write_best_result(fout, mutation, sb_wb_results, mut_isoforms, strand, pos, 
         best[5],     # affinity
     )
 
-    # Write output line 
-    fout.write(
-        f"{best_ASO[3][1]}\t{best_ASO[3][2]}\t{best_ASO[3][0]}\t{best_ASO[5]}\t"
-        f"{best_ASO[3][3]}\t{str(best_ASO[1])}\t{str(best_ASO[0])}\t{best_ASO[2]}\t"
-        f"{best_ASO[6]}\t{best_ASO[7]}\t{best_ASO[4]}\t{edit_option}\n"
-    )
+    # Write output line
+    if cfg.mode == "single":
+        fout.write(
+                f"{best_ASO[3]}\t{best_ASO[5]}\t{str(best_ASO[1])}\t{str(best_ASO[0])}\t{best_ASO[2]}\t"
+                f"{best_ASO[6]}\t{best_ASO[7]}\t{best_ASO[4]}\t{edit_option}\n"
+            )
+    else:
+        fout.write(
+            f"{best_ASO[3][1]}\t{best_ASO[3][2]}\t{best_ASO[3][0]}\t{best_ASO[5]}\t"
+            f"{best_ASO[3][3]}\t{str(best_ASO[1])}\t{str(best_ASO[0])}\t{best_ASO[2]}\t"
+            f"{best_ASO[6]}\t{best_ASO[7]}\t{best_ASO[4]}\t{edit_option}\n"
+        )
 
 
 def define_output_path(cfg, primary_site, patient_id, file_id, duplicates, patient_dict) -> str:

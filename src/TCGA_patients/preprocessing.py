@@ -163,7 +163,10 @@ def preprocessing(mutation: tuple, k: int, cfg: AppConfig) -> Optional[Tuple[Lis
     # ==========================
     # Parse mutation
     # ==========================
-    mutation_input = mutation[0]
+    if cfg.mode =="single":
+        mutation_input = mutation
+    else:
+        mutation_input = mutation[0]
     match = checking_input(mutation_input)
     if not match:
         log.warning(f"Skipping unrecognized mutation format: {mutation_input}")
@@ -193,10 +196,13 @@ def preprocessing(mutation: tuple, k: int, cfg: AppConfig) -> Optional[Tuple[Lis
         log.error(f"No transcript info found for {mutation_input}")
         return None
     
-    row = next(
-        (r.split("\t") for r in res_list if mutation[2] in r.split("\t")[3]),
-        res_list[0].split("\t")
-    )
+    if cfg.mode =="single":
+        row = res_list[0].split("\t")
+    else:
+        row = next(
+            (r.split("\t") for r in res_list if mutation[2] in r.split("\t")[3]),
+            res_list[0].split("\t")
+        )
 
     strand = None
     reading_frame = None
@@ -221,7 +227,6 @@ def preprocessing(mutation: tuple, k: int, cfg: AppConfig) -> Optional[Tuple[Lis
     if reading_frame is None:
         log.error(
             f"Missing or invalid reading frame (RF) for {mutation[0]} "
-            f"(transcript {mutation[2]}). Row fields: {row}"
         )
         return None
 
