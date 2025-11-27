@@ -51,10 +51,8 @@ def parse_hla(alleles):
         gene, d1, d2 = m.group(1), m.group(2), m.group(3)
         cleaned.append(f"HLA-{gene}{d1}{d2}")
 
-    return cleaned
-
-    
-
+    return list(set(cleaned))
+  
 def setup_environment(netmhc_path: Path):
     """
     Configure environment variables required for NetMHCpan execution.

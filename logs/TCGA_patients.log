@@ -1,11 +1,5 @@
-2025-11-27 20:36:02,146 | INFO     | src.TCGA_patients.pipeline | Running neoADARgen in SINGLE-MUTATION mode
-2025-11-27 20:36:02,148 | INFO     | src.TCGA_patients.pipeline | Mutation: chr7:g.100958233G>A
-2025-11-27 20:36:02,150 | INFO     | src.TCGA_patients.pipeline | HLA alleles: ['HLA-C1203', 'HLA-B3501']
-2025-11-27 20:36:02,152 | INFO     | src.TCGA_patients.pipeline | No gene-counts file provided — skipping TPM annotation
-2025-11-27 20:36:02,534 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-C1203 -l 9 -BA -t 2.1
-2025-11-27 20:36:02,713 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-B3501 -l 9 -BA -t 2.1
-2025-11-27 20:36:02,890 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-C1203 -l 9 -BA -t 2.1
-2025-11-27 20:36:04,291 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-B3501 -l 9 -BA -t 2.1
-2025-11-27 20:36:05,686 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-C1203 -l 9 -BA -t 2.1
-2025-11-27 20:36:11,957 | DEBUG    | src.TCGA_patients.mhcpan | Running NetMHCpan command: /private7/projects/Netanel/netMHCpan-4.1/Linux_x86_64/bin/netMHCpan -f sup/TEMP/input_seq0.fsa -a HLA-B3501 -l 9 -BA -t 2.1
-2025-11-27 20:36:18,187 | INFO     | src.TCGA_patients.pipeline | neoADARgen pipeline completed successfully.
+2025-11-27 21:00:31,429 | INFO     | src.TCGA_patients.pipeline | Running neoADARgen in SINGLE-MUTATION mode
+2025-11-27 21:00:31,432 | INFO     | src.TCGA_patients.pipeline | Mutation: chr7:g.100958233G>A
+2025-11-27 21:00:31,434 | INFO     | src.TCGA_patients.pipeline | HLA alleles: ['HLA-C1203', 'HLA-B3501']
+2025-11-27 21:00:31,436 | INFO     | src.TCGA_patients.pipeline | No gene-counts file provided — skipping TPM annotation
+2025-11-27 21:00:47,421 | INFO     | src.TCGA_patients.pipeline | neoADARgen pipeline completed successfully.

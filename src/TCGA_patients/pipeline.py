@@ -246,12 +246,12 @@ def write_best_result(fout, mutation, sb_wb_results, mut_isoforms, strand, pos, 
 
     # Pack final result tuple 
     best_ASO = (
-        guide_name,          # gRNA / ADAR guide
-        ASO_target,          # DNA target sequence
+        guide_name,  # gRNA / ADAR guide
+        ASO_target,  # DNA target sequence
         best[2],     # rank
-        mutation,            # full mutation info
+        mutation,    # full mutation info
         best[3],     # HLA
-        strand,              # +/-
+        strand,      # +/-
         best[4],     # rank_ba
         best[5],     # affinity
     )
