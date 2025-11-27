@@ -48,8 +48,8 @@ cd neoADARgen
 
 2. Create conda environment
 ```
-conda env create -f TCGA_environment.yml
-conda activate TCGA_patients_env 
+conda env create -f neoADARgen_environment.yml
+conda activate neoADARgen_env 
 ```
 3. Running the Pipeline
 The easiest way to run neoADARgen is by providing a configuration file (.yml) that defines all required paths and runtime parameters.
